@@ -263,7 +263,8 @@
     margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--line);
   }
   .story-card {
-    display: block; text-decoration: none; color: inherit;
+    display: flex; gap: 16px; align-items: flex-start;
+    text-decoration: none; color: inherit;
     border: 1px solid var(--line); border-left: 4px solid var(--muscle);
     border-radius: 3px; padding: 16px 20px; margin-bottom: 12px;
     background: rgba(239,230,210,0.5);
@@ -271,6 +272,17 @@
   }
   .story-card:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow); }
   .story-card:focus-visible { outline: 2px solid var(--accent); }
+  .sc-thumb {
+    flex: 0 0 84px; width: 84px; height: 84px;
+    border-radius: 4px; object-fit: cover;
+    border: 1px solid var(--line); background: var(--tendon);
+  }
+  .sc-thumb-ph {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px; line-height: 1;
+    background: linear-gradient(135deg, var(--tendon), var(--bone));
+  }
+  .sc-body { flex: 1; min-width: 0; }
   .story-card .sc-title {
     font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px;
     color: var(--blood-deep); margin-bottom: 5px;
@@ -281,6 +293,19 @@
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
   }
   .story-card .sc-desc { font-size: 16px; color: #3a2c22; }
+
+  /* "real story" link at the foot of each disease write-up */
+  .story-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 8px 0 0 52px;
+    font-family: 'Spline Sans Mono', monospace; font-size: 13px;
+    text-decoration: none; color: var(--blood);
+    background: var(--highlight); padding: 10px 16px; border-radius: 6px;
+    box-shadow: 0 2px 0 rgba(140,29,24,0.2);
+    transition: background 0.15s;
+  }
+  .story-link:hover { background: #f7e08a; }
+  .story-link b { color: var(--blood-deep); }
 
   /* disease cards */
   .disease {
@@ -513,7 +538,7 @@
     body { font-size: 17px; }
     .disease-num { font-size: 60px; }
     .disease h3, .disease .subtitle, .count-tag { padding-left: 0; }
-    .eli5-btn, .eli5-panel, .disease-fig { margin-left: 0; }
+    .eli5-btn, .eli5-panel, .disease-fig, .story-link { margin-left: 0; }
     h1 { font-size: 40px; }
   }
 </style>
@@ -564,6 +589,7 @@
       <p>Inside the cell, each <span class="term" data-term="Sarcomere">Sarcomere</span> loses integrity — the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> distort, misaligning <span class="term" data-term="Actin">Actin</span> (the <span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (the <span class="term" data-term="Thick filament">Thick filament</span>). The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> can no longer reset properly, so the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> and its <span class="term" data-term="power stroke">power stroke</span> fail, crippling the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> mishandles signaling, <span class="term" data-term="ATP">ATP</span> is wasted, and <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span> degrades. Damage worsens during <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, while <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> all weaken.</p>
     </div>
     <div class="count-tag">▸ 33 distinct word-bank terms</div>
+    <a class="story-link" href="https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin" target="_blank" rel="noopener noreferrer">📖 Real story: <b>The Remarkable Life of Ibelin</b> ↗</a>
   </article>
 
   <!-- DISEASE 2 -->
@@ -586,6 +612,7 @@
       <p>In MG, the signal fails, so the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> never floods the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. Without calcium, <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> stay in place, the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> never starts, and the <span class="term" data-term="power stroke">power stroke</span> that pulls the <span class="term" data-term="Thin filament">Thin filament</span> past the <span class="term" data-term="Thick filament">Thick filament</span> cannot occur — defeating the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Actin">Actin</span> and <span class="term" data-term="Myosin">Myosin</span> within each <span class="term" data-term="Sarcomere">Sarcomere</span> remain idle even though <span class="term" data-term="ATP">ATP</span> is available. As a result, the <span class="term" data-term="muscle fibers">muscle fibers</span> of the <span class="term" data-term="Muscles">Muscles</span> cannot <span class="term" data-term="contract">contract</span> and then <span class="term" data-term="relax">relax</span> on demand; the <span class="term" data-term="tendons">tendons</span> receive no force. Weakness affects <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> alike, and patients fatigue rapidly.</p>
     </div>
     <div class="count-tag">▸ 32 distinct word-bank terms</div>
+    <a class="story-link" href="https://en.wikipedia.org/wiki/Aristotle_Onassis" target="_blank" rel="noopener noreferrer">📖 Real story: <b>Aristotle Onassis</b> ↗</a>
   </article>
 
   <!-- DISEASE 3 -->
@@ -608,6 +635,7 @@
       <p>Signaling itself is intact: an <span class="term" data-term="action potential">action potential</span> crosses the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span> via <span class="term" data-term="acetylcholine">acetylcholine</span>, travels the <span class="term" data-term="Sarcolemma">Sarcolemma</span> through <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span> and <span class="term" data-term="T-tubules">T-tubules</span>, and the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> releases <span class="term" data-term="calcium">calcium</span> into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span>, freeing <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span>. But without fuel the <span class="term" data-term="Sarcomere">Sarcomere</span> cannot work, so <span class="term" data-term="muscle fibers">muscle fibers</span> struggle to <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>. Every effort suffers — <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, <span class="term" data-term="isometric contraction">isometric contraction</span> — and the <span class="term" data-term="length-tension relationship">length-tension relationship</span> is functionally useless when <span class="term" data-term="ATP">ATP</span> runs out.</p>
     </div>
     <div class="count-tag">▸ 31 distinct word-bank terms</div>
+    <a class="story-link" href="https://en.wikipedia.org/wiki/Glycogen_storage_disease_type_V" target="_blank" rel="noopener noreferrer">📖 Real story: <b>the “second wind” discovery</b> ↗</a>
   </article>
 
   <!-- DISEASE 4 -->
@@ -630,6 +658,7 @@
       <p>Yet abnormal <span class="term" data-term="calcium">calcium</span> handling by the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> has been proposed, leaking calcium into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> and altering the <span class="term" data-term="length-tension relationship">length-tension relationship</span>. Stalled <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> turnover and a weak <span class="term" data-term="power stroke">power stroke</span> may leave the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span> inefficient, so the <span class="term" data-term="Muscles">Muscles</span> feel unable to fully <span class="term" data-term="relax">relax</span> after they <span class="term" data-term="contract">contract</span>. The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> reset poorly, and <span class="term" data-term="ATP">ATP</span> demand rises during energy crises that may involve <span class="term" data-term="Creatine phosphate">Creatine phosphate</span> depletion, sluggish <span class="term" data-term="Glycolysis">Glycolysis</span>, and impaired <span class="term" data-term="Cellular respiration">Cellular respiration</span>. Pain flares with <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span>.</p>
     </div>
     <div class="count-tag">▸ 35 distinct word-bank terms</div>
+    <a class="story-link" href="https://en.wikipedia.org/wiki/Gaga:_Five_Foot_Two" target="_blank" rel="noopener noreferrer">📖 Real story: <b>Gaga: Five Foot Two</b> ↗</a>
   </article>
 
   </div><!-- /tab-diseases -->
@@ -881,22 +910,22 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 /* ---------- REAL STORIES ---------- */
 const STORIES = [
   { disease:"Duchenne Muscular Dystrophy", sub:"A structural collapse", items:[
-    {title:"The Remarkable Life of Ibelin", meta:"Netflix documentary · 2024", url:"https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin", desc:"Mats Steen, a Norwegian man with DMD, lived a rich hidden life as the hero “Ibelin” in World of Warcraft. After he died at 25, his parents discovered the huge online community that had come to love him."},
-    {title:"Darius Goes West", meta:"Documentary · 2007", url:"https://en.wikipedia.org/wiki/Darius_Goes_West", desc:"Teenager Darius Weems, who had DMD and had never left his home state, took a cross-country road trip with friends to raise awareness and push for wheelchair accessibility."},
-    {title:"Alfredo “Dino” Ferrari", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Alfredo_Ferrari", desc:"Enzo Ferrari's son and chosen heir died of DMD at just 24. Ferrari's “Dino” line of cars is named in his memory."}
+    {title:"The Remarkable Life of Ibelin", meta:"Netflix documentary · 2024", url:"https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin", emoji:"🎮", desc:"Mats Steen, a Norwegian man with DMD, lived a rich hidden life as the hero “Ibelin” in World of Warcraft. After he died at 25, his parents discovered the huge online community that had come to love him."},
+    {title:"Darius Goes West", meta:"Documentary · 2007", url:"https://en.wikipedia.org/wiki/Darius_Goes_West", emoji:"🚐", desc:"Teenager Darius Weems, who had DMD and had never left his home state, took a cross-country road trip with friends to raise awareness and push for wheelchair accessibility."},
+    {title:"Alfredo “Dino” Ferrari", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Alfredo_Ferrari", thumb:"images/stories/alfredo-ferrari.jpg", desc:"Enzo Ferrari's son and chosen heir died of DMD at just 24. Ferrari's “Dino” line of cars is named in his memory."}
   ]},
   { disease:"Myasthenia Gravis", sub:"A broken signal", items:[
-    {title:"Aristotle Onassis", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Aristotle_Onassis", desc:"The Greek shipping magnate developed MG late in life — he famously taped his drooping eyelids open to see — and died of MG-related respiratory failure in 1975."},
-    {title:"Suzanne Rogers", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Suzanne_Rogers", desc:"The “Days of Our Lives” actress was diagnosed in 1984 and had the writers give her character MG too, turning her own diagnosis into public awareness."},
-    {title:"Sir Laurence Olivier", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Laurence_Olivier", desc:"One of the greatest actors of the 20th century kept performing on stage and screen while battling myasthenia gravis."}
+    {title:"Aristotle Onassis", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Aristotle_Onassis", thumb:"images/stories/onassis.jpg", desc:"The Greek shipping magnate developed MG late in life — he famously taped his drooping eyelids open to see — and died of MG-related respiratory failure in 1975."},
+    {title:"Suzanne Rogers", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Suzanne_Rogers", thumb:"images/stories/suzanne-rogers.jpg", desc:"The “Days of Our Lives” actress was diagnosed in 1984 and had the writers give her character MG too, turning her own diagnosis into public awareness."},
+    {title:"Sir Laurence Olivier", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Laurence_Olivier", thumb:"images/stories/laurence-olivier.jpg", desc:"One of the greatest actors of the 20th century kept performing on stage and screen while battling myasthenia gravis."}
   ]},
   { disease:"McArdle Disease", sub:"An energy crisis", items:[
-    {title:"The discovery & the “second wind”", meta:"Wikipedia · Glycogen storage disease V", url:"https://en.wikipedia.org/wiki/Glycogen_storage_disease_type_V", desc:"In 1951 Dr. Brian McArdle described a patient whose muscles cramped painfully with exercise but eased after a brief rest — the hallmark “second wind” that still defines the disease today."},
-    {title:"Real patient stories (IamGSD)", meta:"Patient community", url:"https://www.iamgsd.org/muscle-gsd-stories", desc:"First-person accounts from dozens of people living with McArdle disease worldwide — how they discovered it, and how they adapted their daily lives around the second wind."}
+    {title:"The discovery & the “second wind”", meta:"Wikipedia · Glycogen storage disease V", url:"https://en.wikipedia.org/wiki/Glycogen_storage_disease_type_V", thumb:"images/stories/mcardle-histology.jpg", desc:"In 1951 Dr. Brian McArdle described a patient whose muscles cramped painfully with exercise but eased after a brief rest — the hallmark “second wind” that still defines the disease today."},
+    {title:"Real patient stories (IamGSD)", meta:"Patient community", url:"https://www.iamgsd.org/muscle-gsd-stories", emoji:"👥", desc:"First-person accounts from dozens of people living with McArdle disease worldwide — how they discovered it, and how they adapted their daily lives around the second wind."}
   ]},
   { disease:"Fibromyalgia", sub:"A whole-system ache", items:[
-    {title:"Gaga: Five Foot Two", meta:"Netflix documentary · 2017", url:"https://en.wikipedia.org/wiki/Gaga:_Five_Foot_Two", desc:"Lady Gaga's documentary candidly shows her chronic fibromyalgia pain — including a hospitalization that forced her to cancel shows — and helped bring the condition mainstream attention."},
-    {title:"Morgan Freeman", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Morgan_Freeman", desc:"After a serious 2008 car crash, the actor developed lasting nerve pain later identified as fibromyalgia, and has spoken openly about living with and managing it."}
+    {title:"Gaga: Five Foot Two", meta:"Netflix documentary · 2017", url:"https://en.wikipedia.org/wiki/Gaga:_Five_Foot_Two", thumb:"images/stories/lady-gaga.jpg", desc:"Lady Gaga's documentary candidly shows her chronic fibromyalgia pain — including a hospitalization that forced her to cancel shows — and helped bring the condition mainstream attention."},
+    {title:"Morgan Freeman", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Morgan_Freeman", thumb:"images/stories/morgan-freeman.jpg", desc:"After a serious 2008 car crash, the actor developed lasting nerve pain later identified as fibromyalgia, and has spoken openly about living with and managing it."}
   ]}
 ];
 
@@ -908,10 +937,16 @@ function buildStories(){
     sec.className = 'story-group';
     let html = `<h3>${g.disease}</h3><div class="sg-sub">${g.sub}</div>`;
     g.items.forEach(it => {
+      const thumb = it.thumb
+        ? `<img class="sc-thumb" src="${it.thumb}" alt="${it.title}" loading="lazy">`
+        : `<div class="sc-thumb sc-thumb-ph">${it.emoji || '📖'}</div>`;
       html += `<a class="story-card" href="${it.url}" target="_blank" rel="noopener noreferrer">` +
+        thumb +
+        `<div class="sc-body">` +
         `<div class="sc-title">${it.title} <span class="arrow">↗</span></div>` +
         `<div class="sc-meta">${it.meta}</div>` +
-        `<div class="sc-desc">${it.desc}</div></a>`;
+        `<div class="sc-desc">${it.desc}</div>` +
+        `</div></a>`;
     });
     sec.innerHTML = html;
     frag.appendChild(sec);
