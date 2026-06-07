@@ -195,6 +195,39 @@
   }
   .gloss-empty { color: var(--accent); font-style: italic; padding: 20px 0; }
 
+  /* ELI5 toggle */
+  .eli5-btn {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--accent); color: var(--bone);
+    border: none; border-radius: 20px;
+    padding: 8px 16px; margin: 0 0 22px 52px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 2px 0 rgba(74,107,94,0.35);
+    transition: background 0.15s;
+  }
+  .eli5-btn:hover { background: #3a564b; }
+  .eli5-btn .chev { transition: transform 0.2s; }
+  .eli5-btn.open .chev { transform: rotate(180deg); }
+  .eli5-panel {
+    display: none;
+    margin: 0 0 24px 52px;
+    padding: 20px 24px;
+    background: rgba(74,107,94,0.1);
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent);
+    border-radius: 3px;
+  }
+  .eli5-panel.open { display: block; }
+  .eli5-panel .eli5-head {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .eli5-panel p { font-size: 17px; margin-bottom: 10px; }
+  .eli5-panel p:last-child { margin-bottom: 0; }
+
   /* disease cards */
   .disease {
     margin-bottom: 64px;
@@ -426,6 +459,7 @@
     body { font-size: 17px; }
     .disease-num { font-size: 60px; }
     .disease h3, .disease .subtitle, .count-tag { padding-left: 0; }
+    .eli5-btn, .eli5-panel { margin-left: 0; }
     h1 { font-size: 40px; }
   }
 </style>
@@ -460,6 +494,12 @@
     <div class="disease-num">01</div>
     <h3>Duchenne Muscular Dystrophy</h3>
     <div class="subtitle">A structural collapse · X-linked, dystrophin-deficient</div>
+    <button class="eli5-btn"><span class="label">Explain it like I'm 5</span><span class="chev">▾</span></button>
+    <div class="eli5-panel">
+      <div class="eli5-head">◆ Like you're five</div>
+      <p>Every muscle is wrapped in a stretchy bag that keeps it together. In Duchenne, the tiny bolt that's supposed to hold that bag onto the muscle is missing from the day you're born.</p>
+      <p>So every time the muscle moves, the bag tears a little and leaks. Over and over, the muscle wears out faster than it can fix itself and slowly gets weaker. It's a "the frame is falling apart" problem.</p>
+    </div>
     <div class="body">
       <p>DMD destroys <span class="term" data-term="Muscles">Muscles</span> from within because the protein anchoring the <span class="term" data-term="Sarcolemma">Sarcolemma</span> is missing. During every cycle of <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>, the membrane tears, flooding the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. This damages the <span class="term" data-term="muscle fibers">muscle fibers</span> and the structural layers around them: the <span class="term" data-term="endomysium">endomysium</span> hugging each fiber, the <span class="term" data-term="perimysium">perimysium</span> wrapping each bundle of <span class="term" data-term="Fascicles">Fascicles</span>, and the <span class="term" data-term="epimysium">epimysium</span> sheathing the whole muscle, which connects to bone via <span class="term" data-term="tendons">tendons</span>.</p>
       <p>Inside the cell, each <span class="term" data-term="Sarcomere">Sarcomere</span> loses integrity — the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> distort, misaligning <span class="term" data-term="Actin">Actin</span> (the <span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (the <span class="term" data-term="Thick filament">Thick filament</span>). The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> can no longer reset properly, so the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> and its <span class="term" data-term="power stroke">power stroke</span> fail, crippling the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> mishandles signaling, <span class="term" data-term="ATP">ATP</span> is wasted, and <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span> degrades. Damage worsens during <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, while <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> all weaken.</p>
@@ -472,6 +512,12 @@
     <div class="disease-num">02</div>
     <h3>Myasthenia Gravis</h3>
     <div class="subtitle">A broken signal · autoimmune, receptor-blocking</div>
+    <button class="eli5-btn"><span class="label">Explain it like I'm 5</span><span class="chev">▾</span></button>
+    <div class="eli5-panel">
+      <div class="eli5-head">◆ Like you're five</div>
+      <p>Your brain tells a muscle to move by sending a tiny chemical "text message" across a little gap. The muscle has tiny mailboxes that catch the message and say "okay, move!"</p>
+      <p>In myasthenia gravis, your own body accidentally blocks or breaks those mailboxes. The message still gets sent, but the muscle barely hears it — so it feels weak and tired, and the more you use it, the worse it gets.</p>
+    </div>
     <div class="body">
       <p>MG is an autoimmune attack on the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span>. Antibodies destroy receptors for the <span class="term" data-term="neurotransmitter">neurotransmitter</span> <span class="term" data-term="acetylcholine">acetylcholine</span>, which motor neurons release into the <span class="term" data-term="Synaptic cleft">Synaptic cleft</span>. Normally an <span class="term" data-term="action potential">action potential</span> triggers that release, depolarizing the <span class="term" data-term="Sarcolemma">Sarcolemma</span> and opening <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span>, spreading the signal down the <span class="term" data-term="T-tubules">T-tubules</span> to drive <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span>.</p>
       <p>In MG, the signal fails, so the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> never floods the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. Without calcium, <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> stay in place, the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> never starts, and the <span class="term" data-term="power stroke">power stroke</span> that pulls the <span class="term" data-term="Thin filament">Thin filament</span> past the <span class="term" data-term="Thick filament">Thick filament</span> cannot occur — defeating the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Actin">Actin</span> and <span class="term" data-term="Myosin">Myosin</span> within each <span class="term" data-term="Sarcomere">Sarcomere</span> remain idle even though <span class="term" data-term="ATP">ATP</span> is available. As a result, the <span class="term" data-term="muscle fibers">muscle fibers</span> of the <span class="term" data-term="Muscles">Muscles</span> cannot <span class="term" data-term="contract">contract</span> and then <span class="term" data-term="relax">relax</span> on demand; the <span class="term" data-term="tendons">tendons</span> receive no force. Weakness affects <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> alike, and patients fatigue rapidly.</p>
@@ -484,6 +530,12 @@
     <div class="disease-num">03</div>
     <h3>McArdle Disease</h3>
     <div class="subtitle">An energy crisis · Glycogen Storage Disease V</div>
+    <button class="eli5-btn"><span class="label">Explain it like I'm 5</span><span class="chev">▾</span></button>
+    <div class="eli5-panel">
+      <div class="eli5-head">◆ Like you're five</div>
+      <p>Muscles need fuel to move, like a phone needs battery. Your body keeps backup fuel stored up and breaks it down when you exercise.</p>
+      <p>In McArdle disease, the tool that breaks down that stored fuel is broken, so the muscle runs out of energy fast and cramps up — especially in the first few minutes. The cool part: if you rest a moment and start again slowly, a "second wind" kicks in because the body switches to a different fuel.</p>
+    </div>
     <div class="body">
       <p>McArdle disease blocks glycogen breakdown, crippling <span class="term" data-term="Glycolysis">Glycolysis</span> and starving the <span class="term" data-term="muscle fibers">muscle fibers</span> of <span class="term" data-term="ATP">ATP</span>. Because <span class="term" data-term="ATP">ATP</span> is required to detach <span class="term" data-term="Myosin">Myosin</span> heads from <span class="term" data-term="Actin">Actin</span> during the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span>, energy failure stalls the <span class="term" data-term="power stroke">power stroke</span> and freezes the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>, causing painful contracture. For the first seconds of effort, <span class="term" data-term="Muscles">Muscles</span> lean on <span class="term" data-term="Creatine phosphate">Creatine phosphate</span>; once a "second wind" arrives, <span class="term" data-term="Cellular respiration">Cellular respiration</span> of fatty acids takes over. Because anaerobic pathways are blocked, little <span class="term" data-term="Lactic acid">Lactic acid</span> forms — a key diagnostic clue.</p>
       <p>Signaling itself is intact: an <span class="term" data-term="action potential">action potential</span> crosses the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span> via <span class="term" data-term="acetylcholine">acetylcholine</span>, travels the <span class="term" data-term="Sarcolemma">Sarcolemma</span> through <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span> and <span class="term" data-term="T-tubules">T-tubules</span>, and the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> releases <span class="term" data-term="calcium">calcium</span> into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span>, freeing <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span>. But without fuel the <span class="term" data-term="Sarcomere">Sarcomere</span> cannot work, so <span class="term" data-term="muscle fibers">muscle fibers</span> struggle to <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>. Every effort suffers — <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, <span class="term" data-term="isometric contraction">isometric contraction</span> — and the <span class="term" data-term="length-tension relationship">length-tension relationship</span> is functionally useless when <span class="term" data-term="ATP">ATP</span> runs out.</p>
@@ -496,6 +548,12 @@
     <div class="disease-num">04</div>
     <h3>Fibromyalgia</h3>
     <div class="subtitle">A whole-system ache · chronic pain processing</div>
+    <button class="eli5-btn"><span class="label">Explain it like I'm 5</span><span class="chev">▾</span></button>
+    <div class="eli5-panel">
+      <div class="eli5-head">◆ Like you're five</div>
+      <p>Imagine the volume knob for pain is turned up way too high. In fibromyalgia, the muscles usually look totally normal under a microscope — nothing is actually broken.</p>
+      <p>But the body's pain alarm is way too sensitive, so even normal touch or effort can really hurt, and you feel achy and tired all over. It's more of a "the wiring is too loud" problem than a "broken part" problem.</p>
+    </div>
     <div class="body">
       <p>Fibromyalgia causes widespread <span class="term" data-term="Muscles">Muscles</span> tenderness and abnormal pain processing, often without structural damage. Patients ache deep in the soft tissue and connective layers — the <span class="term" data-term="endomysium">endomysium</span>, <span class="term" data-term="perimysium">perimysium</span>, and <span class="term" data-term="epimysium">epimysium</span> — with stiffness at <span class="term" data-term="tendons">tendons</span> insertions and across bundles of <span class="term" data-term="Fascicles">Fascicles</span>. Microscopically the <span class="term" data-term="muscle fibers">muscle fibers</span> and each <span class="term" data-term="Sarcomere">Sarcomere</span> look normal: the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> are intact, and <span class="term" data-term="Actin">Actin</span> (<span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (<span class="term" data-term="Thick filament">Thick filament</span>) align correctly.</p>
       <p>Yet abnormal <span class="term" data-term="calcium">calcium</span> handling by the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> has been proposed, leaking calcium into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> and altering the <span class="term" data-term="length-tension relationship">length-tension relationship</span>. Stalled <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> turnover and a weak <span class="term" data-term="power stroke">power stroke</span> may leave the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span> inefficient, so the <span class="term" data-term="Muscles">Muscles</span> feel unable to fully <span class="term" data-term="relax">relax</span> after they <span class="term" data-term="contract">contract</span>. The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> reset poorly, and <span class="term" data-term="ATP">ATP</span> demand rises during energy crises that may involve <span class="term" data-term="Creatine phosphate">Creatine phosphate</span> depletion, sluggish <span class="term" data-term="Glycolysis">Glycolysis</span>, and impaired <span class="term" data-term="Cellular respiration">Cellular respiration</span>. Pain flares with <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span>.</p>
@@ -739,6 +797,16 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + t));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+/* ---------- ELI5 TOGGLES ---------- */
+document.querySelectorAll('.eli5-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.nextElementSibling;
+    const open = panel.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.querySelector('.label').textContent = open ? "Hide simple version" : "Explain it like I'm 5";
   });
 });
 
