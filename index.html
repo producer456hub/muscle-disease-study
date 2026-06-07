@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muscle Physiology Through Disease — Interactive Study Tool</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+  :root {
+    --ink: #2a1f1a;
+    --paper: #f4 ede1;
+    --paper: #f4ede1;
+    --blood: #8c1d18;
+    --blood-deep: #5e1310;
+    --muscle: #b8483f;
+    --tendon: #d9c7a3;
+    --bone: #efe6d2;
+    --highlight: #f0d264;
+    --line: #cbb994;
+    --accent: #4a6b5e;
+    --shadow: rgba(60, 30, 20, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(184,72,63,0.06), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(74,107,94,0.07), transparent 45%),
+      var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 18px;
+    background-attachment: fixed;
+  }
+
+  /* subtle paper grain */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    z-index: 0;
+  }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 120px; position: relative; z-index: 1; }
+
+  header.hero {
+    padding: 80px 0 48px;
+    border-bottom: 3px double var(--blood-deep);
+    margin-bottom: 8px;
+  }
+  .kicker {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(38px, 7vw, 72px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--blood-deep);
+    margin-bottom: 20px;
+  }
+  h1 em { font-style: italic; color: var(--muscle); }
+  .lede {
+    font-size: 20px;
+    max-width: 620px;
+    color: #4a3a2e;
+  }
+
+  /* "How it was made" panel */
+  .meta-panel {
+    background: linear-gradient(180deg, rgba(217,199,163,0.4), rgba(217,199,163,0.15));
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent);
+    padding: 28px 32px;
+    margin: 40px 0 56px;
+    border-radius: 2px;
+  }
+  .meta-panel h2 {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .meta-panel p { font-size: 16px; margin-bottom: 12px; }
+  .meta-panel p:last-child { margin-bottom: 0; }
+  .meta-panel code {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 13px;
+    background: rgba(140,29,24,0.08);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--blood-deep);
+  }
+
+  .hint {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 13px;
+    color: var(--blood);
+    background: var(--highlight);
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin: 8px 0 40px;
+    box-shadow: 0 2px 0 rgba(140,29,24,0.2);
+  }
+
+  /* disease cards */
+  .disease {
+    margin-bottom: 64px;
+    position: relative;
+  }
+  .disease-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 90px;
+    color: rgba(184,72,63,0.13);
+    line-height: 0.7;
+    position: absolute;
+    top: -10px; left: -8px;
+    z-index: 0;
+  }
+  .disease h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--blood-deep);
+    position: relative;
+    z-index: 1;
+    padding-left: 52px;
+    margin-bottom: 6px;
+  }
+  .disease .subtitle {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-left: 52px;
+    margin-bottom: 22px;
+  }
+  .disease .body { position: relative; z-index: 1; }
+  .disease .body p { margin-bottom: 16px; }
+
+  /* clickable bank terms */
+  .term {
+    color: var(--blood);
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px dotted var(--muscle);
+    transition: background 0.15s, color 0.15s;
+    padding: 0 1px;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+  .term:hover { background: var(--highlight); color: var(--blood-deep); }
+  .term:focus-visible { outline: 2px solid var(--accent); }
+
+  .count-tag {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 10px;
+    padding-left: 52px;
+    opacity: 0.8;
+  }
+
+  /* popover / modal for definitions */
+  .pop-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(42,31,26,0.45);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 24px;
+  }
+  .pop-backdrop.open { display: flex; }
+  .pop {
+    background: var(--bone);
+    border: 1px solid var(--line);
+    border-top: 6px solid var(--blood);
+    max-width: 480px; width: 100%;
+    padding: 32px;
+    border-radius: 4px;
+    box-shadow: 0 30px 60px var(--shadow);
+    transform: translateY(10px) scale(0.98);
+    animation: pop-in 0.22s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes pop-in { to { transform: translateY(0) scale(1); } }
+  .pop .term-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--blood-deep);
+    margin-bottom: 4px;
+  }
+  .pop .term-cat {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .pop .term-def { font-size: 17px; color: #3a2c22; }
+  .pop button.close {
+    margin-top: 24px;
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--blood);
+    color: var(--bone);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .pop button.close:hover { background: var(--blood-deep); }
+
+  /* QUIZ */
+  .quiz-section {
+    margin-top: 90px;
+    padding-top: 40px;
+    border-top: 3px double var(--blood-deep);
+  }
+  .quiz-section h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 40px;
+    color: var(--blood-deep);
+    margin-bottom: 8px;
+  }
+  .quiz-intro { color: #4a3a2e; margin-bottom: 12px; max-width: 600px; }
+  .progress-wrap {
+    height: 8px; background: var(--tendon); border-radius: 8px;
+    overflow: hidden; margin: 24px 0 40px;
+  }
+  .progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--muscle), var(--blood));
+    transition: width 0.4s ease;
+  }
+
+  .q {
+    margin-bottom: 36px;
+    padding: 24px 26px;
+    background: rgba(239,230,210,0.55);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .q .q-num {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .q .q-text { font-size: 18px; font-weight: 500; margin-bottom: 18px; }
+  .opt {
+    display: block; width: 100%; text-align: left;
+    font-family: 'Newsreader', serif; font-size: 16px;
+    padding: 12px 16px; margin-bottom: 10px;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink);
+  }
+  .opt:hover:not(:disabled) { border-color: var(--muscle); background: #fff; }
+  .opt:disabled { cursor: default; }
+  .opt.correct { background: rgba(74,107,94,0.18); border-color: var(--accent); color: var(--blood-deep); font-weight: 600; }
+  .opt.wrong { background: rgba(140,29,24,0.12); border-color: var(--blood); text-decoration: line-through; opacity: 0.7; }
+  .feedback {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 13px;
+    margin-top: 8px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.right { background: rgba(74,107,94,0.15); color: var(--accent); }
+  .feedback.nope { background: rgba(140,29,24,0.1); color: var(--blood); }
+
+  .score-box {
+    position: sticky; bottom: 0;
+    background: var(--blood-deep);
+    color: var(--bone);
+    padding: 18px 28px;
+    border-radius: 6px 6px 0 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Spline Sans Mono', monospace;
+    box-shadow: 0 -8px 30px var(--shadow);
+    z-index: 50;
+    margin-top: 40px;
+  }
+  .score-box .label { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.8; }
+  .score-box .val { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 900; }
+  .score-box button {
+    background: var(--highlight); color: var(--blood-deep);
+    border: none; padding: 10px 18px; border-radius: 4px;
+    font-family: 'Spline Sans Mono', monospace; font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  }
+
+  .final-card {
+    display: none;
+    margin-top: 30px;
+    padding: 36px;
+    text-align: center;
+    background: var(--bone);
+    border: 1px solid var(--line);
+    border-top: 6px solid var(--blood);
+    border-radius: 4px;
+  }
+  .final-card.show { display: block; }
+  .final-card .big {
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: 64px; color: var(--blood-deep); line-height: 1;
+  }
+  .final-card .grade { font-family:'Spline Sans Mono',monospace; letter-spacing:0.15em; text-transform:uppercase; margin: 12px 0; color: var(--accent);}
+  .final-card .msg { color: #4a3a2e; max-width: 460px; margin: 0 auto 20px; }
+  .final-card button {
+    background: var(--blood); color: var(--bone); border: none;
+    padding: 12px 24px; border-radius: 4px; cursor: pointer;
+    font-family: 'Spline Sans Mono', monospace; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  footer { text-align:center; font-family:'Spline Sans Mono',monospace; font-size:12px; color:var(--accent); opacity:0.7; margin-top:60px;}
+
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+    .disease-num { font-size: 60px; }
+    .disease h3, .disease .subtitle, .count-tag { padding-left: 0; }
+    h1 { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Bio 40A · Muscle Physiology</div>
+    <h1>Anatomy of <em>Failure</em></h1>
+    <p class="lede">Four diseases, told through the machinery of the muscle. Every <strong>bolded</strong> term is drawn from your word bank — tap any of them to read its definition.</p>
+  </header>
+
+  <div class="meta-panel">
+    <h2>◆ How this was made</h2>
+    <p>This page takes a 44-word muscle-physiology word bank and weaves the terms into four disease descriptions, each using at least 30 distinct bank words. Each disease was chosen so its mechanism naturally exercises a cluster of vocabulary — structural anatomy, the contraction cycle, neuromuscular signaling, or energy metabolism.</p>
+    <p>Every bank term is wrapped in a clickable <code>&lt;span class="term"&gt;</code> tied to a definitions dictionary. Tapping a term opens a popover with its category and meaning. At the bottom, a 30-question multiple-choice quiz tests retention of every term, giving <strong>instant per-question feedback</strong> plus a running and final score. Everything runs in the browser with no dependencies — pure HTML, CSS, and vanilla JavaScript.</p>
+  </div>
+
+  <div class="hint">👆 Tap any bolded word for a definition</div>
+
+  <!-- DISEASE 1 -->
+  <article class="disease">
+    <div class="disease-num">01</div>
+    <h3>Duchenne Muscular Dystrophy</h3>
+    <div class="subtitle">A structural collapse · X-linked, dystrophin-deficient</div>
+    <div class="body">
+      <p>DMD destroys <span class="term" data-term="Muscles">Muscles</span> from within because the protein anchoring the <span class="term" data-term="Sarcolemma">Sarcolemma</span> is missing. During every cycle of <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>, the membrane tears, flooding the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. This damages the <span class="term" data-term="muscle fibers">muscle fibers</span> and the structural layers around them: the <span class="term" data-term="endomysium">endomysium</span> hugging each fiber, the <span class="term" data-term="perimysium">perimysium</span> wrapping each bundle of <span class="term" data-term="Fascicles">Fascicles</span>, and the <span class="term" data-term="epimysium">epimysium</span> sheathing the whole muscle, which connects to bone via <span class="term" data-term="tendons">tendons</span>.</p>
+      <p>Inside the cell, each <span class="term" data-term="Sarcomere">Sarcomere</span> loses integrity — the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> distort, misaligning <span class="term" data-term="Actin">Actin</span> (the <span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (the <span class="term" data-term="Thick filament">Thick filament</span>). The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> can no longer reset properly, so the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> and its <span class="term" data-term="power stroke">power stroke</span> fail, crippling the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> mishandles signaling, <span class="term" data-term="ATP">ATP</span> is wasted, and <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span> degrades. Damage worsens during <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, while <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> all weaken.</p>
+    </div>
+    <div class="count-tag">▸ 33 distinct word-bank terms</div>
+  </article>
+
+  <!-- DISEASE 2 -->
+  <article class="disease">
+    <div class="disease-num">02</div>
+    <h3>Myasthenia Gravis</h3>
+    <div class="subtitle">A broken signal · autoimmune, receptor-blocking</div>
+    <div class="body">
+      <p>MG is an autoimmune attack on the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span>. Antibodies destroy receptors for the <span class="term" data-term="neurotransmitter">neurotransmitter</span> <span class="term" data-term="acetylcholine">acetylcholine</span>, which motor neurons release into the <span class="term" data-term="Synaptic cleft">Synaptic cleft</span>. Normally an <span class="term" data-term="action potential">action potential</span> triggers that release, depolarizing the <span class="term" data-term="Sarcolemma">Sarcolemma</span> and opening <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span>, spreading the signal down the <span class="term" data-term="T-tubules">T-tubules</span> to drive <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span>.</p>
+      <p>In MG, the signal fails, so the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> never floods the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. Without calcium, <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> stay in place, the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> never starts, and the <span class="term" data-term="power stroke">power stroke</span> that pulls the <span class="term" data-term="Thin filament">Thin filament</span> past the <span class="term" data-term="Thick filament">Thick filament</span> cannot occur — defeating the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Actin">Actin</span> and <span class="term" data-term="Myosin">Myosin</span> within each <span class="term" data-term="Sarcomere">Sarcomere</span> remain idle even though <span class="term" data-term="ATP">ATP</span> is available. As a result, the <span class="term" data-term="muscle fibers">muscle fibers</span> of the <span class="term" data-term="Muscles">Muscles</span> cannot <span class="term" data-term="contract">contract</span> and then <span class="term" data-term="relax">relax</span> on demand; the <span class="term" data-term="tendons">tendons</span> receive no force. Weakness affects <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> alike, and patients fatigue rapidly.</p>
+    </div>
+    <div class="count-tag">▸ 32 distinct word-bank terms</div>
+  </article>
+
+  <!-- DISEASE 3 -->
+  <article class="disease">
+    <div class="disease-num">03</div>
+    <h3>McArdle Disease</h3>
+    <div class="subtitle">An energy crisis · Glycogen Storage Disease V</div>
+    <div class="body">
+      <p>McArdle disease blocks glycogen breakdown, crippling <span class="term" data-term="Glycolysis">Glycolysis</span> and starving the <span class="term" data-term="muscle fibers">muscle fibers</span> of <span class="term" data-term="ATP">ATP</span>. Because <span class="term" data-term="ATP">ATP</span> is required to detach <span class="term" data-term="Myosin">Myosin</span> heads from <span class="term" data-term="Actin">Actin</span> during the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span>, energy failure stalls the <span class="term" data-term="power stroke">power stroke</span> and freezes the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>, causing painful contracture. For the first seconds of effort, <span class="term" data-term="Muscles">Muscles</span> lean on <span class="term" data-term="Creatine phosphate">Creatine phosphate</span>; once a "second wind" arrives, <span class="term" data-term="Cellular respiration">Cellular respiration</span> of fatty acids takes over. Because anaerobic pathways are blocked, little <span class="term" data-term="Lactic acid">Lactic acid</span> forms — a key diagnostic clue.</p>
+      <p>Signaling itself is intact: an <span class="term" data-term="action potential">action potential</span> crosses the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span> via <span class="term" data-term="acetylcholine">acetylcholine</span>, travels the <span class="term" data-term="Sarcolemma">Sarcolemma</span> through <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span> and <span class="term" data-term="T-tubules">T-tubules</span>, and the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> releases <span class="term" data-term="calcium">calcium</span> into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span>, freeing <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span>. But without fuel the <span class="term" data-term="Sarcomere">Sarcomere</span> cannot work, so <span class="term" data-term="muscle fibers">muscle fibers</span> struggle to <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>. Every effort suffers — <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, <span class="term" data-term="isometric contraction">isometric contraction</span> — and the <span class="term" data-term="length-tension relationship">length-tension relationship</span> is functionally useless when <span class="term" data-term="ATP">ATP</span> runs out.</p>
+    </div>
+    <div class="count-tag">▸ 31 distinct word-bank terms</div>
+  </article>
+
+  <!-- DISEASE 4 -->
+  <article class="disease">
+    <div class="disease-num">04</div>
+    <h3>Fibromyalgia</h3>
+    <div class="subtitle">A whole-system ache · chronic pain processing</div>
+    <div class="body">
+      <p>Fibromyalgia causes widespread <span class="term" data-term="Muscles">Muscles</span> tenderness and abnormal pain processing, often without structural damage. Patients ache deep in the soft tissue and connective layers — the <span class="term" data-term="endomysium">endomysium</span>, <span class="term" data-term="perimysium">perimysium</span>, and <span class="term" data-term="epimysium">epimysium</span> — with stiffness at <span class="term" data-term="tendons">tendons</span> insertions and across bundles of <span class="term" data-term="Fascicles">Fascicles</span>. Microscopically the <span class="term" data-term="muscle fibers">muscle fibers</span> and each <span class="term" data-term="Sarcomere">Sarcomere</span> look normal: the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> are intact, and <span class="term" data-term="Actin">Actin</span> (<span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (<span class="term" data-term="Thick filament">Thick filament</span>) align correctly.</p>
+      <p>Yet abnormal <span class="term" data-term="calcium">calcium</span> handling by the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> has been proposed, leaking calcium into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> and altering the <span class="term" data-term="length-tension relationship">length-tension relationship</span>. Stalled <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> turnover and a weak <span class="term" data-term="power stroke">power stroke</span> may leave the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span> inefficient, so the <span class="term" data-term="Muscles">Muscles</span> feel unable to fully <span class="term" data-term="relax">relax</span> after they <span class="term" data-term="contract">contract</span>. The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> reset poorly, and <span class="term" data-term="ATP">ATP</span> demand rises during energy crises that may involve <span class="term" data-term="Creatine phosphate">Creatine phosphate</span> depletion, sluggish <span class="term" data-term="Glycolysis">Glycolysis</span>, and impaired <span class="term" data-term="Cellular respiration">Cellular respiration</span>. Pain flares with <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span>.</p>
+    </div>
+    <div class="count-tag">▸ 35 distinct word-bank terms</div>
+  </article>
+
+  <!-- QUIZ -->
+  <section class="quiz-section">
+    <h2>Retention Quiz</h2>
+    <p class="quiz-intro">Thirty questions — one per key term you just read. You get instant feedback on each answer, a running score below, and a final grade when you finish.</p>
+    <div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+    <div id="quiz"></div>
+    <div class="final-card" id="finalCard">
+      <div class="big" id="finalPct">0%</div>
+      <div class="grade" id="finalGrade"></div>
+      <p class="msg" id="finalMsg"></p>
+      <button onclick="resetQuiz()">Retake Quiz</button>
+    </div>
+  </section>
+
+  <footer>Built for Bio 40A · Pure HTML/CSS/JS · Tap terms · Take the quiz in-browser</footer>
+</div>
+
+<!-- Definition popover -->
+<div class="pop-backdrop" id="popBackdrop">
+  <div class="pop">
+    <div class="term-name" id="popName"></div>
+    <div class="term-cat" id="popCat"></div>
+    <div class="term-def" id="popDef"></div>
+    <button class="close" onclick="closePop()">Close</button>
+  </div>
+</div>
+
+<script>
+/* ---------- DEFINITIONS DICTIONARY ---------- */
+const DEFS = {
+  "Muscles": ["Gross anatomy", "Organs of contractile tissue that produce movement, posture, and heat by shortening to pull on bones via tendons."],
+  "tendons": ["Gross anatomy", "Tough cords of dense connective tissue that attach muscle to bone and transmit the force of contraction."],
+  "Fascicles": ["Gross anatomy", "Bundles of muscle fibers grouped together inside a muscle, each wrapped by the perimysium."],
+  "epimysium": ["Connective tissue", "The dense outer connective-tissue sheath surrounding an entire muscle."],
+  "perimysium": ["Connective tissue", "The connective-tissue layer that wraps each fascicle (bundle of muscle fibers)."],
+  "endomysium": ["Connective tissue", "The delicate connective-tissue layer surrounding each individual muscle fiber."],
+  "muscle fibers": ["Cell biology", "Individual muscle cells; long, multinucleated cells packed with myofibrils that contract."],
+  "Sarcolemma": ["Cell biology", "The plasma membrane of a muscle fiber; it conducts the action potential across the cell surface."],
+  "Sarcoplasm": ["Cell biology", "The cytoplasm of a muscle fiber, containing glycogen, myoglobin, and the contractile machinery."],
+  "Sarcoplasmic reticulum (SR)": ["Cell biology", "Specialized smooth ER of muscle that stores and releases calcium to trigger contraction."],
+  "Sarcomere": ["Contractile unit", "The basic repeating contractile unit of a myofibril, running from one Z line to the next."],
+  "Actin": ["Contractile protein", "The protein that makes up the thin filament; myosin heads bind to it to generate force."],
+  "Myosin": ["Contractile protein", "The motor protein of the thick filament whose heads form crossbridges with actin and pull."],
+  "Thin filament": ["Contractile structure", "A filament made mainly of actin (with troponin and tropomyosin) that slides during contraction."],
+  "Thick filament": ["Contractile structure", "A filament made of bundled myosin molecules whose heads drive the power stroke."],
+  "troponin": ["Regulatory protein", "A protein on the thin filament that binds calcium and shifts tropomyosin to expose binding sites."],
+  "tropomyosin": ["Regulatory protein", "A rope-like protein that blocks myosin-binding sites on actin until calcium/troponin move it aside."],
+  "Z line": ["Sarcomere landmark", "The boundary at each end of a sarcomere; thin filaments anchor here."],
+  "M line": ["Sarcomere landmark", "The central line of the sarcomere that anchors thick filaments."],
+  "A band": ["Sarcomere landmark", "The dark band spanning the full length of the thick filaments; its width stays constant during contraction."],
+  "I band": ["Sarcomere landmark", "The light band containing only thin filaments; it narrows as the muscle contracts."],
+  "excitation-contraction coupling": ["Physiology", "The sequence linking an action potential on the sarcolemma to calcium release and contraction."],
+  "action potential": ["Physiology", "A rapid electrical signal that travels along the sarcolemma to trigger muscle activation."],
+  "Synaptic cleft": ["Neuromuscular", "The tiny gap between the motor neuron terminal and the muscle fiber where neurotransmitter diffuses."],
+  "acetylcholine": ["Neuromuscular", "The neurotransmitter released at the neuromuscular junction that excites the muscle fiber."],
+  "neurotransmitter": ["Neuromuscular", "A chemical messenger released by a neuron to signal across a synapse — here, acetylcholine."],
+  "neuromuscular junction": ["Neuromuscular", "The synapse where a motor neuron meets a muscle fiber to transmit the signal to contract."],
+  "voltage-gated sodium channels": ["Membrane physiology", "Sodium channels that open in response to voltage change, propagating the action potential."],
+  "T-tubules": ["Cell biology", "Invaginations of the sarcolemma that carry the action potential deep into the fiber toward the SR."],
+  "calcium": ["Ion / signal", "The ion released from the SR that binds troponin to start contraction; its removal allows relaxation."],
+  "contract": ["Mechanics", "To generate tension and (often) shorten as actin and myosin slide past each other."],
+  "relax": ["Mechanics", "To release tension as calcium is pumped back into the SR and crossbridges detach."],
+  "sliding filament model of contraction": ["Theory", "The model in which thin and thick filaments slide past each other, shortening the sarcomere without changing filament length."],
+  "ATP": ["Energy", "Adenosine triphosphate — the energy currency that powers the power stroke and detaches myosin from actin."],
+  "crossbridge cycle": ["Mechanics", "The repeating sequence of myosin binding, pulling (power stroke), detaching, and re-cocking."],
+  "power stroke": ["Mechanics", "The step where the myosin head pivots and pulls the thin filament toward the sarcomere center."],
+  "Creatine phosphate": ["Energy", "A rapid backup energy store that quickly regenerates ATP during the first seconds of activity."],
+  "Glycolysis": ["Energy", "The anaerobic breakdown of glucose to make ATP quickly, producing lactic acid when oxygen is limited."],
+  "Lactic acid": ["Metabolism", "A byproduct of anaerobic glycolysis that accumulates during intense exercise."],
+  "Cellular respiration": ["Energy", "The aerobic, oxygen-using pathway that produces large amounts of ATP for sustained activity."],
+  "Isotonic contraction": ["Contraction type", "A contraction where the muscle changes length while tension stays roughly constant (concentric or eccentric)."],
+  "Concentric contraction": ["Contraction type", "An isotonic contraction in which the muscle shortens while producing force (e.g., lifting up)."],
+  "Eccentric contraction": ["Contraction type", "An isotonic contraction in which the muscle lengthens under load (e.g., lowering slowly)."],
+  "isometric contraction": ["Contraction type", "A contraction where the muscle generates tension without changing length (e.g., holding a weight still)."],
+  "length-tension relationship": ["Physiology", "The principle that a muscle produces maximal force at an optimal length with ideal filament overlap."]
+};
+
+/* ---------- POPOVER ---------- */
+const backdrop = document.getElementById('popBackdrop');
+document.querySelectorAll('.term').forEach(el => {
+  el.setAttribute('tabindex','0');
+  el.addEventListener('click', () => openPop(el.dataset.term));
+  el.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();openPop(el.dataset.term);} });
+});
+function openPop(term){
+  const d = DEFS[term];
+  if(!d) return;
+  document.getElementById('popName').textContent = term;
+  document.getElementById('popCat').textContent = d[0];
+  document.getElementById('popDef').textContent = d[1];
+  backdrop.classList.add('open');
+}
+function closePop(){ backdrop.classList.remove('open'); }
+backdrop.addEventListener('click', e => { if(e.target===backdrop) closePop(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closePop(); });
+
+/* ---------- QUIZ DATA (30 questions, one per key term) ---------- */
+const QUESTIONS = [
+  {q:"Which structure is the plasma membrane of a muscle fiber that conducts the action potential?", c:"Sarcolemma", opts:["Sarcoplasm","Sarcolemma","Sarcomere","Sarcoplasmic reticulum (SR)"]},
+  {q:"The cytoplasm of a muscle fiber is called the:", c:"Sarcoplasm", opts:["Sarcolemma","Sarcoplasm","Endomysium","Synaptic cleft"]},
+  {q:"What organelle stores and releases calcium to trigger contraction?", c:"Sarcoplasmic reticulum (SR)", opts:["T-tubules","Mitochondria","Sarcoplasmic reticulum (SR)","Z line"]},
+  {q:"The basic repeating contractile unit running Z line to Z line is the:", c:"Sarcomere", opts:["Fascicle","Sarcomere","Myofibril","A band"]},
+  {q:"Which protein makes up the thin filament?", c:"Actin", opts:["Myosin","Actin","Titin","Troponin"]},
+  {q:"The motor protein whose heads form crossbridges and pull is:", c:"Myosin", opts:["Actin","Tropomyosin","Myosin","Troponin"]},
+  {q:"Which protein binds calcium and then shifts tropomyosin aside?", c:"troponin", opts:["troponin","tropomyosin","actin","myosin"]},
+  {q:"What rope-like protein blocks myosin-binding sites until calcium arrives?", c:"tropomyosin", opts:["troponin","tropomyosin","titin","actin"]},
+  {q:"Thin filaments anchor at which sarcomere landmark?", c:"Z line", opts:["M line","A band","Z line","I band"]},
+  {q:"The central line anchoring thick filaments is the:", c:"M line", opts:["Z line","M line","I band","A band"]},
+  {q:"Which band spans the full length of the thick filaments and stays constant during contraction?", c:"A band", opts:["I band","A band","Z line","H zone"]},
+  {q:"Which band contains only thin filaments and narrows during contraction?", c:"I band", opts:["A band","I band","M line","Z line"]},
+  {q:"The connective sheath surrounding an ENTIRE muscle is the:", c:"epimysium", opts:["endomysium","perimysium","epimysium","fascia"]},
+  {q:"The layer wrapping each fascicle is the:", c:"perimysium", opts:["epimysium","perimysium","endomysium","sarcolemma"]},
+  {q:"The delicate layer around each individual muscle fiber is the:", c:"endomysium", opts:["epimysium","perimysium","endomysium","tendon"]},
+  {q:"Bundles of muscle fibers grouped together are called:", c:"Fascicles", opts:["Tendons","Fascicles","Myofibrils","Sarcomeres"]},
+  {q:"Tough cords that attach muscle to bone are:", c:"tendons", opts:["ligaments","tendons","fascicles","aponeuroses"]},
+  {q:"The synapse where a motor neuron meets a muscle fiber is the:", c:"neuromuscular junction", opts:["Synaptic cleft","neuromuscular junction","T-tubule","motor cortex"]},
+  {q:"The neurotransmitter released to excite the muscle fiber is:", c:"acetylcholine", opts:["dopamine","acetylcholine","norepinephrine","GABA"]},
+  {q:"The tiny gap neurotransmitter diffuses across is the:", c:"Synaptic cleft", opts:["neuromuscular junction","Synaptic cleft","T-tubule","sarcolemma"]},
+  {q:"Channels that open with voltage change to propagate the action potential are:", c:"voltage-gated sodium channels", opts:["calcium pumps","voltage-gated sodium channels","leak channels","ligand-gated chloride channels"]},
+  {q:"Membrane invaginations carrying the action potential deep toward the SR are:", c:"T-tubules", opts:["T-tubules","myofibrils","sarcomeres","terminal cisternae"]},
+  {q:"The process linking an action potential to calcium release and contraction is:", c:"excitation-contraction coupling", opts:["the crossbridge cycle","excitation-contraction coupling","glycolysis","the length-tension relationship"]},
+  {q:"Which ion binds troponin to START contraction?", c:"calcium", opts:["sodium","potassium","calcium","chloride"]},
+  {q:"The model where filaments slide past each other to shorten the sarcomere is the:", c:"sliding filament model of contraction", opts:["crossbridge cycle","sliding filament model of contraction","power stroke","length-tension relationship"]},
+  {q:"The repeating sequence of myosin binding, pulling, detaching, and re-cocking is the:", c:"crossbridge cycle", opts:["power stroke","crossbridge cycle","excitation-contraction coupling","glycolysis"]},
+  {q:"The step where the myosin head pivots and pulls the thin filament is the:", c:"power stroke", opts:["recovery stroke","power stroke","relaxation","depolarization"]},
+  {q:"Which molecule both powers the power stroke AND detaches myosin from actin?", c:"ATP", opts:["calcium","ATP","creatine","glucose"]},
+  {q:"The rapid backup that quickly regenerates ATP in the first seconds of activity is:", c:"Creatine phosphate", opts:["Glycolysis","Creatine phosphate","Cellular respiration","Lactic acid"]},
+  {q:"A contraction where the muscle generates tension WITHOUT changing length is:", c:"isometric contraction", opts:["Concentric contraction","Eccentric contraction","isometric contraction","Isotonic contraction"]}
+];
+
+/* ---------- QUIZ RENDER ---------- */
+const quizEl = document.getElementById('quiz');
+let answered = {};
+let correctCount = 0;
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function buildQuiz(){
+  quizEl.innerHTML = '';
+  answered = {};
+  correctCount = 0;
+  document.getElementById('finalCard').classList.remove('show');
+  QUESTIONS.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'q';
+    const opts = shuffle([...item.opts]);
+    card.innerHTML = `<div class="q-num">Question ${i+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts" id="opts-${i}"></div>
+      <div class="feedback" id="fb-${i}"></div>`;
+    quizEl.appendChild(card);
+    const optWrap = card.querySelector(`#opts-${i}`);
+    opts.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.onclick = () => answer(i, opt, b, item.c);
+      optWrap.appendChild(b);
+    });
+  });
+  updateScore();
+}
+
+function answer(qi, choice, btn, correct){
+  if(answered[qi]) return;
+  answered[qi] = true;
+  const wrap = btn.parentElement;
+  const isRight = choice === correct;
+  if(isRight) correctCount++;
+  [...wrap.children].forEach(b => {
+    b.disabled = true;
+    if(b.textContent === correct) b.classList.add('correct');
+    else if(b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.classList.add('show', isRight ? 'right' : 'nope');
+  fb.textContent = isRight
+    ? "✓ Correct"
+    : `✗ Correct answer: ${correct}`;
+  updateScore();
+  if(Object.keys(answered).length === QUESTIONS.length) showFinal();
+}
+
+function updateScore(){
+  const done = Object.keys(answered).length;
+  document.getElementById('progress').style.width = (done/QUESTIONS.length*100)+'%';
+  let box = document.getElementById('scoreBox');
+  if(!box){
+    box = document.createElement('div');
+    box.className = 'score-box';
+    box.id = 'scoreBox';
+    document.querySelector('.quiz-section').insertBefore(box, document.getElementById('finalCard'));
+  }
+  box.innerHTML = `<div><div class="label">Score</div><div class="val">${correctCount}/${QUESTIONS.length}</div></div>
+    <div style="text-align:right"><div class="label">Answered</div><div class="val">${done}/${QUESTIONS.length}</div></div>`;
+}
+
+function showFinal(){
+  const pct = Math.round(correctCount/QUESTIONS.length*100);
+  const card = document.getElementById('finalCard');
+  document.getElementById('finalPct').textContent = pct + '%';
+  let grade, msg;
+  if(pct>=90){grade="Mastery";msg="Excellent retention — you've got the muscle vocabulary locked down.";}
+  else if(pct>=80){grade="Strong";msg="Solid grasp. Review the few terms you missed and you're set.";}
+  else if(pct>=70){grade="Passing";msg="Decent — tap the bolded terms you missed and run the quiz again.";}
+  else if(pct>=60){grade="Shaky";msg="Re-read the disease descriptions, study the popovers, and retake.";}
+  else {grade="Needs review";msg="Go back through each disease, click every bolded term, then retry the quiz.";}
+  document.getElementById('finalGrade').textContent = grade;
+  document.getElementById('finalMsg').textContent = msg;
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){ buildQuiz(); window.scrollTo({top:document.querySelector('.quiz-section').offsetTop-20,behavior:'smooth'}); }
+
+buildQuiz();
+</script>
+</body>
+</html>
