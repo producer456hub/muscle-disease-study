@@ -117,6 +117,84 @@
     box-shadow: 0 2px 0 rgba(140,29,24,0.2);
   }
 
+  /* tab navigation */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--line);
+    margin: 0 0 40px;
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 40;
+    padding-top: 8px;
+  }
+  .tab-btn {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 18px;
+    cursor: pointer;
+    color: var(--accent);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--blood); }
+  .tab-btn.active { color: var(--blood-deep); border-bottom-color: var(--blood); font-weight: 600; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* glossary */
+  #tab-glossary > h2 {
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: 40px; color: var(--blood-deep); margin-bottom: 8px;
+  }
+  .glossary-intro { color:#4a3a2e; margin-bottom: 8px; max-width: 620px; }
+  .gloss-search {
+    width: 100%; max-width: 380px;
+    font-family: 'Newsreader', serif; font-size: 16px;
+    padding: 10px 14px; margin: 14px 0 30px;
+    border: 1.5px solid var(--line); border-radius: 4px;
+    background: var(--paper); color: var(--ink);
+  }
+  .gloss-search:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .gloss-card {
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--muscle);
+    border-radius: 3px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    background: rgba(239,230,210,0.5);
+  }
+  .gloss-card h4 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 22px; color: var(--blood-deep);
+    margin-bottom: 2px;
+  }
+  .gloss-card .gloss-cat {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .gloss-card .gloss-def { margin-bottom: 10px; }
+  .gloss-card .gloss-ex {
+    font-size: 16px;
+    padding: 10px 14px;
+    background: rgba(240,210,100,0.2);
+    border-radius: 3px;
+    color: #4a3a2e;
+  }
+  .gloss-card .gloss-ex b {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--blood); display: block; margin-bottom: 3px;
+  }
+  .gloss-empty { color: var(--accent); font-style: italic; padding: 20px 0; }
+
   /* disease cards */
   .disease {
     margin-bottom: 64px;
@@ -361,6 +439,14 @@
     <p class="lede">Four diseases, told through the machinery of the muscle. Every <strong>bolded</strong> term is drawn from your word bank — tap any of them to read its definition.</p>
   </header>
 
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="diseases">Disease Stories</button>
+    <button class="tab-btn" data-tab="glossary">Glossary</button>
+    <button class="tab-btn" data-tab="quiz">Quiz</button>
+  </nav>
+
+  <div class="tab-panel active" id="tab-diseases">
+
   <div class="meta-panel">
     <h2>◆ How this was made</h2>
     <p>This page takes a 44-word muscle-physiology word bank and weaves the terms into four disease descriptions, each using at least 30 distinct bank words. Each disease was chosen so its mechanism naturally exercises a cluster of vocabulary — structural anatomy, the contraction cycle, neuromuscular signaling, or energy metabolism.</p>
@@ -417,7 +503,18 @@
     <div class="count-tag">▸ 35 distinct word-bank terms</div>
   </article>
 
+  </div><!-- /tab-diseases -->
+
+  <!-- GLOSSARY -->
+  <div class="tab-panel" id="tab-glossary">
+    <h2>Glossary</h2>
+    <p class="glossary-intro">Every term from the word bank — its category, a plain-language definition, and a quick example of what it does in action.</p>
+    <input class="gloss-search" id="glossSearch" type="text" placeholder="Search terms or definitions…" aria-label="Search glossary" />
+    <div id="glossList"></div>
+  </div>
+
   <!-- QUIZ -->
+  <div class="tab-panel" id="tab-quiz">
   <section class="quiz-section">
     <h2>Retention Quiz</h2>
     <p class="quiz-intro">Thirty questions — one per key term you just read. You get instant feedback on each answer, a running score below, and a final grade when you finish.</p>
@@ -430,6 +527,7 @@
       <button onclick="resetQuiz()">Retake Quiz</button>
     </div>
   </section>
+  </div><!-- /tab-quiz -->
 
   <footer>Built for Bio 40A · Pure HTML/CSS/JS · Tap terms · Take the quiz in-browser</footer>
 </div>
@@ -633,6 +731,107 @@ function showFinal(){
 function resetQuiz(){ buildQuiz(); window.scrollTo({top:document.querySelector('.quiz-section').offsetTop-20,behavior:'smooth'}); }
 
 buildQuiz();
+
+/* ---------- TAB SWITCHING ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + t));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+/* ---------- GLOSSARY: brief "in action" example per term ---------- */
+const EXAMPLES = {
+  "Muscles": "The biceps brachii shortens to curl a dumbbell up toward your shoulder.",
+  "tendons": "The Achilles tendon passes calf force to the heel so you can push off the ground.",
+  "Fascicles": "In a strap-like muscle, fascicles run nearly its full length for a wide range of motion.",
+  "epimysium": "The epimysium around the quadriceps blends into the patellar tendon at the knee.",
+  "perimysium": "The perimysium carries the blood vessels and nerves that supply each fascicle.",
+  "endomysium": "The endomysium holds the capillaries that feed oxygen to a single muscle fiber.",
+  "muscle fibers": "A single fiber can stretch almost the whole length of a muscle belly.",
+  "Sarcolemma": "When acetylcholine lands, the sarcolemma depolarizes and fires an action potential.",
+  "Sarcoplasm": "Calcium flooding the sarcoplasm is the go-signal that starts a contraction.",
+  "Sarcoplasmic reticulum (SR)": "On a nerve signal the SR dumps calcium; at rest it pumps it back so the muscle relaxes.",
+  "Sarcomere": "Thousands of sarcomeres in a row each shorten a little, shortening the whole fiber a lot.",
+  "Actin": "Myosin grabs actin and ratchets it inward, like pulling a rope hand-over-hand.",
+  "Myosin": "Each myosin head pivots to drag actin toward the center of the sarcomere.",
+  "Thin filament": "The thin filament slides inward during contraction, narrowing the I band.",
+  "Thick filament": "The thick filament stays centered while its heads reach out and pull thin filaments in.",
+  "troponin": "Calcium binding troponin is the switch that uncovers actin's binding sites.",
+  "tropomyosin": "At rest, tropomyosin lies over actin like a cover, blocking accidental contraction.",
+  "Z line": "As a sarcomere contracts, its two Z lines are pulled closer together.",
+  "M line": "The M line keeps thick filaments centered so both ends pull evenly.",
+  "A band": "Even at full contraction the A band width stays the same, proving filaments don't shrink.",
+  "I band": "Watching the I band narrow under the microscope shows the muscle is contracting.",
+  "excitation-contraction coupling": "It is the relay that turns a nerve's electrical signal into mechanical pulling.",
+  "action potential": "An action potential sweeps along the sarcolemma in milliseconds to trigger a twitch.",
+  "Synaptic cleft": "Acetylcholine diffuses across the synaptic cleft to reach receptors on the muscle.",
+  "acetylcholine": "ACh binding opens channels that depolarize the muscle and start its action potential.",
+  "neurotransmitter": "The neurotransmitter acetylcholine carries the 'contract' message from nerve to muscle.",
+  "neuromuscular junction": "Each motor neuron meets its fibers at a neuromuscular junction to command them.",
+  "voltage-gated sodium channels": "Sodium rushing through these channels regenerates the action potential along the membrane.",
+  "T-tubules": "T-tubules carry the signal into the fiber's core so deep myofibrils fire together.",
+  "calcium": "Calcium switches contraction ON; pumping it back into the SR switches it OFF.",
+  "contract": "Your calf muscles contract to lift you up onto your toes.",
+  "relax": "When calcium is pumped away, crossbridges let go and the muscle relaxes.",
+  "sliding filament model of contraction": "Under the microscope the sarcomere shortens while each filament's length stays the same.",
+  "ATP": "ATP fuels the power stroke and is also needed to release myosin — no ATP causes rigor mortis.",
+  "crossbridge cycle": "Repeating the crossbridge cycle many times a second ratchets the filaments along.",
+  "power stroke": "The power stroke is the oar-pull that actually moves the thin filament.",
+  "Creatine phosphate": "In the first seconds of a sprint, creatine phosphate refills ATP almost instantly.",
+  "Glycolysis": "During hard exercise glycolysis makes fast ATP but builds up lactic acid.",
+  "Lactic acid": "Lactic acid buildup adds to the burn during intense, oxygen-starved effort.",
+  "Cellular respiration": "On a long jog, cellular respiration burns oxygen to make ATP for a steady pace.",
+  "Isotonic contraction": "Raising and lowering a dumbbell are isotonic — the muscle changes length.",
+  "Concentric contraction": "Curling a weight up is concentric — the biceps shortens while it works.",
+  "Eccentric contraction": "Lowering the weight slowly is eccentric — the biceps lengthens under load.",
+  "isometric contraction": "Holding a plank is isometric — high tension, but no change in length.",
+  "length-tension relationship": "A muscle stretched to its ideal length produces its strongest contraction."
+};
+
+function buildGlossary(){
+  const list = document.getElementById('glossList');
+  const frag = document.createDocumentFragment();
+  Object.keys(DEFS).forEach(term => {
+    const [cat, def] = DEFS[term];
+    const ex = EXAMPLES[term] || '';
+    const card = document.createElement('div');
+    card.className = 'gloss-card';
+    card.dataset.search = (term + ' ' + cat + ' ' + def + ' ' + ex).toLowerCase();
+    let html = `<h4>${term}</h4><div class="gloss-cat">${cat}</div><div class="gloss-def">${def}</div>`;
+    if(ex) html += `<div class="gloss-ex"><b>In action</b>${ex}</div>`;
+    card.innerHTML = html;
+    frag.appendChild(card);
+  });
+  list.appendChild(frag);
+}
+buildGlossary();
+
+const glossSearch = document.getElementById('glossSearch');
+glossSearch.addEventListener('input', () => {
+  const q = glossSearch.value.trim().toLowerCase();
+  let any = false;
+  document.querySelectorAll('#glossList .gloss-card').forEach(c => {
+    const show = !q || c.dataset.search.includes(q);
+    c.style.display = show ? '' : 'none';
+    if(show) any = true;
+  });
+  let empty = document.getElementById('glossEmpty');
+  if(!any){
+    if(!empty){
+      empty = document.createElement('div');
+      empty.id = 'glossEmpty';
+      empty.className = 'gloss-empty';
+      empty.textContent = 'No terms match your search.';
+      document.getElementById('glossList').appendChild(empty);
+    }
+    empty.style.display = '';
+  } else if(empty){
+    empty.style.display = 'none';
+  }
+});
 </script>
 </body>
 </html>
