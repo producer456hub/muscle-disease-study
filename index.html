@@ -228,6 +228,60 @@
   .eli5-panel p { font-size: 17px; margin-bottom: 10px; }
   .eli5-panel p:last-child { margin-bottom: 0; }
 
+  /* in-story figures */
+  .disease-fig {
+    margin: 0 0 22px 52px;
+    border: 1px solid var(--line);
+    background: var(--bone);
+    border-radius: 4px;
+    padding: 14px;
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+  .disease-fig.portrait { max-width: 330px; }
+  .disease-fig img { width: 100%; height: auto; display: block; border-radius: 2px; }
+  .disease-fig figcaption {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: 11px; color: var(--accent);
+    margin-top: 10px; line-height: 1.55;
+  }
+  .disease-fig figcaption b { color: var(--blood); }
+
+  /* real stories tab */
+  #tab-stories > h2 {
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: 40px; color: var(--blood-deep); margin-bottom: 8px;
+  }
+  .stories-intro { color:#4a3a2e; margin-bottom: 30px; max-width: 620px; }
+  .story-group { margin-bottom: 42px; }
+  .story-group > h3 {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 26px;
+    color: var(--blood-deep); margin-bottom: 2px;
+  }
+  .story-group .sg-sub {
+    font-family: 'Spline Sans Mono', monospace; font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--line);
+  }
+  .story-card {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-left: 4px solid var(--muscle);
+    border-radius: 3px; padding: 16px 20px; margin-bottom: 12px;
+    background: rgba(239,230,210,0.5);
+    transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .story-card:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow); }
+  .story-card:focus-visible { outline: 2px solid var(--accent); }
+  .story-card .sc-title {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px;
+    color: var(--blood-deep); margin-bottom: 5px;
+  }
+  .story-card .sc-title .arrow { font-family: 'Spline Sans Mono', monospace; font-size: 15px; color: var(--muscle); }
+  .story-card .sc-meta {
+    font-family: 'Spline Sans Mono', monospace; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .story-card .sc-desc { font-size: 16px; color: #3a2c22; }
+
   /* disease cards */
   .disease {
     margin-bottom: 64px;
@@ -459,7 +513,7 @@
     body { font-size: 17px; }
     .disease-num { font-size: 60px; }
     .disease h3, .disease .subtitle, .count-tag { padding-left: 0; }
-    .eli5-btn, .eli5-panel { margin-left: 0; }
+    .eli5-btn, .eli5-panel, .disease-fig { margin-left: 0; }
     h1 { font-size: 40px; }
   }
 </style>
@@ -475,6 +529,7 @@
 
   <nav class="tabs">
     <button class="tab-btn active" data-tab="diseases">Disease Stories</button>
+    <button class="tab-btn" data-tab="stories">Real Stories</button>
     <button class="tab-btn" data-tab="glossary">Glossary</button>
     <button class="tab-btn" data-tab="quiz">Quiz</button>
   </nav>
@@ -501,6 +556,10 @@
       <p>So every time the muscle moves, the bag tears a little and leaks. Over and over, the muscle wears out faster than it can fix itself and slowly gets weaker. It's a "the frame is falling apart" problem.</p>
     </div>
     <div class="body">
+      <figure class="disease-fig">
+        <img src="images/dmd-muscle-structure.png" alt="Labeled diagram of a skeletal muscle fiber showing the sarcolemma, myofibrils, T-tubules, and sarcoplasmic reticulum" loading="lazy">
+        <figcaption>The muscle fiber's architecture — the <b>sarcolemma</b> (outer membrane) is exactly the structure that tears in DMD. <br>Diagram: Blausen Medical, via Wikimedia Commons (CC BY 3.0).</figcaption>
+      </figure>
       <p>DMD destroys <span class="term" data-term="Muscles">Muscles</span> from within because the protein anchoring the <span class="term" data-term="Sarcolemma">Sarcolemma</span> is missing. During every cycle of <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>, the membrane tears, flooding the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. This damages the <span class="term" data-term="muscle fibers">muscle fibers</span> and the structural layers around them: the <span class="term" data-term="endomysium">endomysium</span> hugging each fiber, the <span class="term" data-term="perimysium">perimysium</span> wrapping each bundle of <span class="term" data-term="Fascicles">Fascicles</span>, and the <span class="term" data-term="epimysium">epimysium</span> sheathing the whole muscle, which connects to bone via <span class="term" data-term="tendons">tendons</span>.</p>
       <p>Inside the cell, each <span class="term" data-term="Sarcomere">Sarcomere</span> loses integrity — the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> distort, misaligning <span class="term" data-term="Actin">Actin</span> (the <span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (the <span class="term" data-term="Thick filament">Thick filament</span>). The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> can no longer reset properly, so the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> and its <span class="term" data-term="power stroke">power stroke</span> fail, crippling the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> mishandles signaling, <span class="term" data-term="ATP">ATP</span> is wasted, and <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span> degrades. Damage worsens during <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, while <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> all weaken.</p>
     </div>
@@ -519,6 +578,10 @@
       <p>In myasthenia gravis, your own body accidentally blocks or breaks those mailboxes. The message still gets sent, but the muscle barely hears it — so it feels weak and tired, and the more you use it, the worse it gets.</p>
     </div>
     <div class="body">
+      <figure class="disease-fig">
+        <img src="images/mg-neuromuscular-junction.jpg" alt="Labeled diagram of the neuromuscular junction and motor end plate" loading="lazy">
+        <figcaption>The <b>neuromuscular junction</b> — acetylcholine crosses the synaptic cleft to its receptors on the muscle. MG's antibodies attack those receptors. <br>Diagram: OpenStax Anatomy &amp; Physiology, via Wikimedia Commons (CC BY-SA 4.0).</figcaption>
+      </figure>
       <p>MG is an autoimmune attack on the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span>. Antibodies destroy receptors for the <span class="term" data-term="neurotransmitter">neurotransmitter</span> <span class="term" data-term="acetylcholine">acetylcholine</span>, which motor neurons release into the <span class="term" data-term="Synaptic cleft">Synaptic cleft</span>. Normally an <span class="term" data-term="action potential">action potential</span> triggers that release, depolarizing the <span class="term" data-term="Sarcolemma">Sarcolemma</span> and opening <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span>, spreading the signal down the <span class="term" data-term="T-tubules">T-tubules</span> to drive <span class="term" data-term="excitation-contraction coupling">excitation-contraction coupling</span>.</p>
       <p>In MG, the signal fails, so the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> never floods the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> with <span class="term" data-term="calcium">calcium</span>. Without calcium, <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> stay in place, the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> never starts, and the <span class="term" data-term="power stroke">power stroke</span> that pulls the <span class="term" data-term="Thin filament">Thin filament</span> past the <span class="term" data-term="Thick filament">Thick filament</span> cannot occur — defeating the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>. The <span class="term" data-term="Actin">Actin</span> and <span class="term" data-term="Myosin">Myosin</span> within each <span class="term" data-term="Sarcomere">Sarcomere</span> remain idle even though <span class="term" data-term="ATP">ATP</span> is available. As a result, the <span class="term" data-term="muscle fibers">muscle fibers</span> of the <span class="term" data-term="Muscles">Muscles</span> cannot <span class="term" data-term="contract">contract</span> and then <span class="term" data-term="relax">relax</span> on demand; the <span class="term" data-term="tendons">tendons</span> receive no force. Weakness affects <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span> alike, and patients fatigue rapidly.</p>
     </div>
@@ -537,6 +600,10 @@
       <p>In McArdle disease, the tool that breaks down that stored fuel is broken, so the muscle runs out of energy fast and cramps up — especially in the first few minutes. The cool part: if you rest a moment and start again slowly, a "second wind" kicks in because the body switches to a different fuel.</p>
     </div>
     <div class="body">
+      <figure class="disease-fig">
+        <img src="images/mcardle-energy-systems.jpg" alt="Diagram of phosphocreatine donating a phosphate to regenerate ATP in a muscle cell" loading="lazy">
+        <figcaption>With glycogen breakdown blocked, McArdle muscles lean on <b>creatine phosphate</b> to remake ATP in the first seconds of effort — until the "second wind" arrives. <br>Diagram via Wikimedia Commons (CC BY 3.0).</figcaption>
+      </figure>
       <p>McArdle disease blocks glycogen breakdown, crippling <span class="term" data-term="Glycolysis">Glycolysis</span> and starving the <span class="term" data-term="muscle fibers">muscle fibers</span> of <span class="term" data-term="ATP">ATP</span>. Because <span class="term" data-term="ATP">ATP</span> is required to detach <span class="term" data-term="Myosin">Myosin</span> heads from <span class="term" data-term="Actin">Actin</span> during the <span class="term" data-term="crossbridge cycle">crossbridge cycle</span>, energy failure stalls the <span class="term" data-term="power stroke">power stroke</span> and freezes the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span>, causing painful contracture. For the first seconds of effort, <span class="term" data-term="Muscles">Muscles</span> lean on <span class="term" data-term="Creatine phosphate">Creatine phosphate</span>; once a "second wind" arrives, <span class="term" data-term="Cellular respiration">Cellular respiration</span> of fatty acids takes over. Because anaerobic pathways are blocked, little <span class="term" data-term="Lactic acid">Lactic acid</span> forms — a key diagnostic clue.</p>
       <p>Signaling itself is intact: an <span class="term" data-term="action potential">action potential</span> crosses the <span class="term" data-term="neuromuscular junction">neuromuscular junction</span> via <span class="term" data-term="acetylcholine">acetylcholine</span>, travels the <span class="term" data-term="Sarcolemma">Sarcolemma</span> through <span class="term" data-term="voltage-gated sodium channels">voltage-gated sodium channels</span> and <span class="term" data-term="T-tubules">T-tubules</span>, and the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> releases <span class="term" data-term="calcium">calcium</span> into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span>, freeing <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span>. But without fuel the <span class="term" data-term="Sarcomere">Sarcomere</span> cannot work, so <span class="term" data-term="muscle fibers">muscle fibers</span> struggle to <span class="term" data-term="contract">contract</span> and <span class="term" data-term="relax">relax</span>. Every effort suffers — <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, <span class="term" data-term="isometric contraction">isometric contraction</span> — and the <span class="term" data-term="length-tension relationship">length-tension relationship</span> is functionally useless when <span class="term" data-term="ATP">ATP</span> runs out.</p>
     </div>
@@ -555,6 +622,10 @@
       <p>But the body's pain alarm is way too sensitive, so even normal touch or effort can really hurt, and you feel achy and tired all over. It's more of a "the wiring is too loud" problem than a "broken part" problem.</p>
     </div>
     <div class="body">
+      <figure class="disease-fig portrait">
+        <img src="images/fibromyalgia-tender-points.png" alt="Diagram of the 18 classic tender points on the body used in fibromyalgia assessment" loading="lazy">
+        <figcaption>The 18 classic fibromyalgia "tender points" — spots that hurt under gentle pressure even though the muscle looks normal. <br>Diagram via Wikimedia Commons (CC0 / public domain).</figcaption>
+      </figure>
       <p>Fibromyalgia causes widespread <span class="term" data-term="Muscles">Muscles</span> tenderness and abnormal pain processing, often without structural damage. Patients ache deep in the soft tissue and connective layers — the <span class="term" data-term="endomysium">endomysium</span>, <span class="term" data-term="perimysium">perimysium</span>, and <span class="term" data-term="epimysium">epimysium</span> — with stiffness at <span class="term" data-term="tendons">tendons</span> insertions and across bundles of <span class="term" data-term="Fascicles">Fascicles</span>. Microscopically the <span class="term" data-term="muscle fibers">muscle fibers</span> and each <span class="term" data-term="Sarcomere">Sarcomere</span> look normal: the <span class="term" data-term="Z line">Z line</span>, <span class="term" data-term="M line">M line</span>, <span class="term" data-term="A band">A band</span>, and <span class="term" data-term="I band">I band</span> are intact, and <span class="term" data-term="Actin">Actin</span> (<span class="term" data-term="Thin filament">Thin filament</span>) and <span class="term" data-term="Myosin">Myosin</span> (<span class="term" data-term="Thick filament">Thick filament</span>) align correctly.</p>
       <p>Yet abnormal <span class="term" data-term="calcium">calcium</span> handling by the <span class="term" data-term="Sarcoplasmic reticulum (SR)">Sarcoplasmic reticulum (SR)</span> has been proposed, leaking calcium into the <span class="term" data-term="Sarcoplasm">Sarcoplasm</span> and altering the <span class="term" data-term="length-tension relationship">length-tension relationship</span>. Stalled <span class="term" data-term="crossbridge cycle">crossbridge cycle</span> turnover and a weak <span class="term" data-term="power stroke">power stroke</span> may leave the <span class="term" data-term="sliding filament model of contraction">sliding filament model of contraction</span> inefficient, so the <span class="term" data-term="Muscles">Muscles</span> feel unable to fully <span class="term" data-term="relax">relax</span> after they <span class="term" data-term="contract">contract</span>. The regulatory proteins <span class="term" data-term="troponin">troponin</span> and <span class="term" data-term="tropomyosin">tropomyosin</span> reset poorly, and <span class="term" data-term="ATP">ATP</span> demand rises during energy crises that may involve <span class="term" data-term="Creatine phosphate">Creatine phosphate</span> depletion, sluggish <span class="term" data-term="Glycolysis">Glycolysis</span>, and impaired <span class="term" data-term="Cellular respiration">Cellular respiration</span>. Pain flares with <span class="term" data-term="Eccentric contraction">Eccentric contraction</span>, <span class="term" data-term="Concentric contraction">Concentric contraction</span>, <span class="term" data-term="Isotonic contraction">Isotonic contraction</span>, and <span class="term" data-term="isometric contraction">isometric contraction</span>.</p>
     </div>
@@ -569,6 +640,13 @@
     <p class="glossary-intro">Every term from the word bank — its category, a plain-language definition, and a quick example of what it does in action.</p>
     <input class="gloss-search" id="glossSearch" type="text" placeholder="Search terms or definitions…" aria-label="Search glossary" />
     <div id="glossList"></div>
+  </div>
+
+  <!-- REAL STORIES -->
+  <div class="tab-panel" id="tab-stories">
+    <h2>Real Stories</h2>
+    <p class="stories-intro">Real people and well-documented cases behind each disease — the kind of stories that make the mechanisms stick. Each card has a quick summary; click through to read or watch the full story. Links open in a new tab.</p>
+    <div id="storiesList"></div>
   </div>
 
   <!-- QUIZ -->
@@ -799,6 +877,48 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
+
+/* ---------- REAL STORIES ---------- */
+const STORIES = [
+  { disease:"Duchenne Muscular Dystrophy", sub:"A structural collapse", items:[
+    {title:"The Remarkable Life of Ibelin", meta:"Netflix documentary · 2024", url:"https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin", desc:"Mats Steen, a Norwegian man with DMD, lived a rich hidden life as the hero “Ibelin” in World of Warcraft. After he died at 25, his parents discovered the huge online community that had come to love him."},
+    {title:"Darius Goes West", meta:"Documentary · 2007", url:"https://en.wikipedia.org/wiki/Darius_Goes_West", desc:"Teenager Darius Weems, who had DMD and had never left his home state, took a cross-country road trip with friends to raise awareness and push for wheelchair accessibility."},
+    {title:"Alfredo “Dino” Ferrari", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Alfredo_Ferrari", desc:"Enzo Ferrari's son and chosen heir died of DMD at just 24. Ferrari's “Dino” line of cars is named in his memory."}
+  ]},
+  { disease:"Myasthenia Gravis", sub:"A broken signal", items:[
+    {title:"Aristotle Onassis", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Aristotle_Onassis", desc:"The Greek shipping magnate developed MG late in life — he famously taped his drooping eyelids open to see — and died of MG-related respiratory failure in 1975."},
+    {title:"Suzanne Rogers", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Suzanne_Rogers", desc:"The “Days of Our Lives” actress was diagnosed in 1984 and had the writers give her character MG too, turning her own diagnosis into public awareness."},
+    {title:"Sir Laurence Olivier", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Laurence_Olivier", desc:"One of the greatest actors of the 20th century kept performing on stage and screen while battling myasthenia gravis."}
+  ]},
+  { disease:"McArdle Disease", sub:"An energy crisis", items:[
+    {title:"The discovery & the “second wind”", meta:"Wikipedia · Glycogen storage disease V", url:"https://en.wikipedia.org/wiki/Glycogen_storage_disease_type_V", desc:"In 1951 Dr. Brian McArdle described a patient whose muscles cramped painfully with exercise but eased after a brief rest — the hallmark “second wind” that still defines the disease today."},
+    {title:"Real patient stories (IamGSD)", meta:"Patient community", url:"https://www.iamgsd.org/muscle-gsd-stories", desc:"First-person accounts from dozens of people living with McArdle disease worldwide — how they discovered it, and how they adapted their daily lives around the second wind."}
+  ]},
+  { disease:"Fibromyalgia", sub:"A whole-system ache", items:[
+    {title:"Gaga: Five Foot Two", meta:"Netflix documentary · 2017", url:"https://en.wikipedia.org/wiki/Gaga:_Five_Foot_Two", desc:"Lady Gaga's documentary candidly shows her chronic fibromyalgia pain — including a hospitalization that forced her to cancel shows — and helped bring the condition mainstream attention."},
+    {title:"Morgan Freeman", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Morgan_Freeman", desc:"After a serious 2008 car crash, the actor developed lasting nerve pain later identified as fibromyalgia, and has spoken openly about living with and managing it."}
+  ]}
+];
+
+function buildStories(){
+  const wrap = document.getElementById('storiesList');
+  const frag = document.createDocumentFragment();
+  STORIES.forEach(g => {
+    const sec = document.createElement('div');
+    sec.className = 'story-group';
+    let html = `<h3>${g.disease}</h3><div class="sg-sub">${g.sub}</div>`;
+    g.items.forEach(it => {
+      html += `<a class="story-card" href="${it.url}" target="_blank" rel="noopener noreferrer">` +
+        `<div class="sc-title">${it.title} <span class="arrow">↗</span></div>` +
+        `<div class="sc-meta">${it.meta}</div>` +
+        `<div class="sc-desc">${it.desc}</div></a>`;
+    });
+    sec.innerHTML = html;
+    frag.appendChild(sec);
+  });
+  wrap.appendChild(frag);
+}
+buildStories();
 
 /* ---------- ELI5 TOGGLES ---------- */
 document.querySelectorAll('.eli5-btn').forEach(btn => {
