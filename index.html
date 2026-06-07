@@ -554,7 +554,7 @@
 
   <nav class="tabs">
     <button class="tab-btn active" data-tab="diseases">Disease Stories</button>
-    <button class="tab-btn" data-tab="stories">Real Stories</button>
+    <button class="tab-btn" data-tab="stories">Real Stories, Real People</button>
     <button class="tab-btn" data-tab="glossary">Glossary</button>
     <button class="tab-btn" data-tab="quiz">Quiz</button>
   </nav>
@@ -673,7 +673,7 @@
 
   <!-- REAL STORIES -->
   <div class="tab-panel" id="tab-stories">
-    <h2>Real Stories</h2>
+    <h2>Real Stories, Real People</h2>
     <p class="stories-intro">Real people and well-documented cases behind each disease — the kind of stories that make the mechanisms stick. Each card has a quick summary; click through to read or watch the full story. Links open in a new tab.</p>
     <div id="storiesList"></div>
   </div>
@@ -910,8 +910,8 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 /* ---------- REAL STORIES ---------- */
 const STORIES = [
   { disease:"Duchenne Muscular Dystrophy", sub:"A structural collapse", items:[
-    {title:"The Remarkable Life of Ibelin", meta:"Netflix documentary · 2024", url:"https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin", emoji:"🎮", desc:"Mats Steen, a Norwegian man with DMD, lived a rich hidden life as the hero “Ibelin” in World of Warcraft. After he died at 25, his parents discovered the huge online community that had come to love him."},
-    {title:"Darius Goes West", meta:"Documentary · 2007", url:"https://en.wikipedia.org/wiki/Darius_Goes_West", emoji:"🚐", desc:"Teenager Darius Weems, who had DMD and had never left his home state, took a cross-country road trip with friends to raise awareness and push for wheelchair accessibility."},
+    {title:"The Remarkable Life of Ibelin", meta:"Netflix documentary · 2024", url:"https://en.wikipedia.org/wiki/The_Remarkable_Life_of_Ibelin", thumb:"images/stories/ibelin-poster.jpg", desc:"Mats Steen, a Norwegian man with DMD, lived a rich hidden life as the hero “Ibelin” in World of Warcraft. After he died at 25, his parents discovered the huge online community that had come to love him."},
+    {title:"Darius Goes West", meta:"Documentary · 2007", url:"https://en.wikipedia.org/wiki/Darius_Goes_West", thumb:"images/stories/darius-goes-west.jpg", desc:"Teenager Darius Weems, who had DMD and had never left his home state, took a cross-country road trip with friends to raise awareness and push for wheelchair accessibility."},
     {title:"Alfredo “Dino” Ferrari", meta:"Wikipedia", url:"https://en.wikipedia.org/wiki/Alfredo_Ferrari", thumb:"images/stories/alfredo-ferrari.jpg", desc:"Enzo Ferrari's son and chosen heir died of DMD at just 24. Ferrari's “Dino” line of cars is named in his memory."}
   ]},
   { disease:"Myasthenia Gravis", sub:"A broken signal", items:[
